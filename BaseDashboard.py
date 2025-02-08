@@ -5,6 +5,7 @@ import json
 app = Flask(__name__)
 
 @app.route('/')
+@app.route('/dashboard')
 def dashboard():
     # Sample data for the time history graph
     time_data = {
@@ -31,30 +32,25 @@ def dashboard():
     transactions = [
         {'user_id': '69231731', 'date': '04/06/2025', 'stock': 'S&P500', 'pl': '+1 USD', 'withdraw': '', 'deposit': '+501 USD'},
         {'user_id': '69231731', 'date': '04/06/2025', 'stock': 'S&P500', 'pl': '-2 USD', 'withdraw': '-498 USD', 'deposit': ''},
-        {'user_id': '69231731', 'date': '04/06/2025', 'stock': 'S&P500', 'pl': '+1 USD', 'withdraw': '', 'deposit': '+101 USD'},
-        {'user_id': '69231731', 'date': '04/06/2025', 'stock': 'S&P500', 'pl': '+3 USD', 'withdraw': '', 'deposit': '+103 USD'},
-        {'user_id': '69231731', 'date': '04/06/2025', 'stock': 'S&P500', 'pl': '-1 USD', 'withdraw': '-599 USD', 'deposit': ''},
-        {'user_id': '69231731', 'date': '04/06/2025', 'stock': 'S&P500', 'pl': '+2 USD', 'withdraw': '', 'deposit': '+602 USD'},
     ]
     
-    # Location and payment data
-    location_data = {
-        'user_id': '69231731',
-        'ip_address': '192.158.1.38',
-        'region': 'America'
-    }
-    
-    payment_data = {
-        'user_id': '69231731',
-        'institution': 'Bank'
-    }
-    
-    return render_template('dashboard.html',
-                         plot_json=json.dumps(fig.to_dict()),
-                         transactions=transactions,
-                         location_data=location_data,
-                         payment_data=payment_data,
-                         risk_score=80)
+    return render_template('dashboard.html', plot_json=json.dumps(fig.to_dict()), transactions=transactions, risk_score=80)
+
+
+@app.route('/inbox')
+def inbox():
+    manual_interventions = [
+        {'user_id': '69231731', 'risk': 80, 'problem': 'Similar IP Addresses'},
+        {'user_id': '69231731', 'risk': 60, 'problem': 'VPN IP Detected'},
+    ]
+
+    ai_scanned_users = [
+        {'user_id': '69231731', 'risk': 70, 'problem': 'Repeated Odd-Hour Transactions'},
+        {'user_id': '69231731', 'risk': 65, 'problem': 'Similar Activity with # 69231731'},
+    ]
+
+    return render_template('inbox.html', manual_interventions=manual_interventions, ai_scanned_users=ai_scanned_users)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-icons">
+            <div class="icon"><a href="/dashboard">☰</a></div>
+            <div class="icon"><a href="/inbox">✉</a></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Inbox</h1>
+        </header>
+
+        <div class="card">
+            <h2>Manual Interventions</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Risk Level</th>
+                        <th>Problem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in manual_interventions %}
+                    <tr>
+                        <td>{{ item.user_id }}</td>
+                        <td>{{ item.risk }}</td>
+                        <td>{{ item.problem }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>AI Scanned Users</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Risk Level</th>
+                        <th>Problem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in ai_scanned_users %}
+                    <tr>
+                        <td>{{ item.user_id }}</td>
+                        <td>{{ item.risk }}</td>
+                        <td>{{ item.problem }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
