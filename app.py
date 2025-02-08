@@ -87,5 +87,39 @@ def inbox():
                         ai_scanned_users=ai_scanned_users,
                         current_page="inbox")
 
+@app.route('/review-form/<user_id>')
+def review_form(user_id):
+    # Find the user data from either manual_interventions or ai_scanned_users
+    user_data = None
+    for user in manual_interventions + ai_scanned_users:
+        if user['user_id'] == user_id:
+            user_data = user
+            break
+    
+    if user_data is None:
+        return redirect(url_for('inbox'))
+    
+    return render_template('review-form.html',
+                         user_data=user_data,
+                         notifications=INBOX_NOTIFICATIONS)
+
+@app.route('/submit-review/<user_id>', methods=['POST'])
+def submit_review(user_id):
+    if request.method == 'POST':
+        # Get form data
+        risk_assessment = request.form.get('risk_assessment')
+        action_taken = request.form.get('action_taken')
+        notes = request.form.get('notes')
+        
+        # Here you would typically save this data to a database
+        # For now, we'll just print it
+        print(f"Review submitted for user {user_id}:")
+        print(f"Risk Assessment: {risk_assessment}")
+        print(f"Action Taken: {action_taken}")
+        print(f"Notes: {notes}")
+        
+        # Redirect back to inbox after submission
+        return redirect(url_for('inbox'))
+
 if __name__ == '__main__':
     app.run(debug=True)
