@@ -14,6 +14,7 @@
                         <th>User ID</th>
                         <th>Risk %</th>
                         <th>Problem</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,6 +23,9 @@
                         <td>{{ item.user_id }}</td>
                         <td class="risk-cell">{{ item.risk }}</td>
                         <td class="problem-cell">{{ item.problem }}</td>
+                        <td>
+                            <a href="/review-form/{{ item.user_id }}" class="action-button">Review</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -39,6 +43,7 @@
                         <th>User ID</th>
                         <th>Risk %</th>
                         <th>Problem</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,6 +52,9 @@
                         <td>{{ item.user_id }}</td>
                         <td class="risk-cell">{{ item.risk }}</td>
                         <td class="problem-cell">{{ item.problem }}</td>
+                        <td>
+                            <a href="/review-form/{{ item.user_id }}" class="action-button">Review</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
