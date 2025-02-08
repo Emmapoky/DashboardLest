@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Fraud Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-icons">
+            <a href="/" class="icon {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                <i class="ri-dashboard-line"></i>
+            </a>
+            <a href="#" class="icon">
+                <i class="ri-menu-line"></i>
+            </a>
+            <a href="/inbox" class="icon {% if request.endpoint == 'inbox' %}active{% endif %}">
+                <i class="ri-mail-line"></i>
+                {% if notifications > 0 %}
+                <span class="notification-badge">{{ notifications }}</span>
+                {% endif %}
+            </a>
+        </div>
+    </div>
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,6 +1,97 @@
-<div class="sidebar">
-    <div class="sidebar-icons">
-        <a href="/dashboard" class="icon">🏠</a>  <!-- Dashboard -->
-        <a href="/inbox" class="icon">✉</a>       <!-- Inbox -->
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block head %}
+{{ super() }}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Fraud Detection Dashboard</h1>
+    <div class="user-badge">User: #69231731</div>
+</header>
+
+<div class="dashboard-grid">
+    <div class="card time-history">
+        <h2>Time History</h2>
+        <div id="timeChart"></div>
+    </div>
+    
+    <div class="card risk-indicator">
+        <h2>Score Risk Indicator</h2>
+        <div class="progress-ring">
+            <div class="progress-circle" style="--progress: {{ risk_score }}">
+                <span class="progress-value">{{ risk_score }}%</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card transactions">
+        <h2>Transactions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Date</th>
+                    <th>Stock</th>
+                    <th>P&L</th>
+                    <th>Withdraw</th>
+                    <th>Deposit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td>{{ t.user_id }}</td>
+                    <td>{{ t.date }}</td>
+                    <td>{{ t.stock }}</td>
+                    <td class="{{ 'positive' if t.pl.startswith('+') else 'negative' }}">{{ t.pl }}</td>
+                    <td class="negative">{{ t.withdraw }}</td>
+                    <td class="positive">{{ t.deposit }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="card location">
+        <h2>Location</h2>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>IP Address</th>
+                <th>Region</th>
+            </tr>
+            <tr>
+                <td>{{ location_data.user_id }}</td>
+                <td>{{ location_data.ip_address }}</td>
+                <td>{{ location_data.region }}</td>
+            </tr>
+        </table>
+        <div class="warning">
+            ⚠ CAUTION: VPN IP DETECTED
+        </div>
+    </div>
+    
+    <div class="card payment-methods">
+        <h2>Payment Methods</h2>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Institution</th>
+            </tr>
+            <tr>
+                <td>{{ payment_data.user_id }}</td>
+                <td>{{ payment_data.institution }}</td>
+            </tr>
+        </table>
     </div>
 </div>
+
+<script>
+    var plotData = {{ plot_json | safe }};
+    Plotly.newPlot('timeChart', plotData.data, plotData.layout);
+</script>
+{% endblock %}
