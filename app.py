@@ -6,6 +6,15 @@ import json
 
 app = Flask(__name__)
 
+transactions = []
+risk_percentage = 30
+transaction_order = ['deposit', 'buy', 'sell', 'withdraw']
+current_step = 0
+
+@app.route('/')
+def frauddemo():
+    return render_template('fraud-demo.html')
+
 # Sample data for inbox notifications
 INBOX_NOTIFICATIONS = 4
 
@@ -26,7 +35,7 @@ ai_scanned_users = [
     {'user_id': '69231731', 'risk': 78, 'problem': 'Similar Activity with # 69231731'},
 ]
 
-@app.route('/')
+@app.route('/dashboard')
 def dashboard():
     # Sample data for the time history graph
     time_data = {
@@ -68,7 +77,9 @@ def dashboard():
     
     payment_data = {
         'user_id': '69231731',
-        'institution': 'Bank'
+        'institution': 'Bank',
+        'user_id': '69231731',
+        'institution': 'Crypto'
     }
     
     return render_template('dashboard.html',

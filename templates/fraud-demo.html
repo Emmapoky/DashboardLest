@@ -1,0 +1,84 @@
+<!-- fraud-demo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraud Detection Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Fraud Detection Demo</h2>
+        <div class="buttons">
+            <button onclick="performTransaction('buy')">Buy</button>
+            <button onclick="performTransaction('sell')">Sell</button>
+            <button onclick="performTransaction('deposit')">Deposit</button>
+            <button onclick="performTransaction('withdraw')">Withdraw</button>
+        </div>
+        
+        <div class="transactions">
+            <h3>Transaction History</h3>
+            <ul id="transaction-list"></ul>
+        </div>
+        
+        <div class="risk-indicator">
+            <h3>Risk Level</h3>
+            <div id="risk-circle" class="risk-green">30%</div>
+        </div>
+    </div>
+    
+    <script>
+        let riskLevel = 30;
+        let transactionCount = 0;
+        
+        function performTransaction(type) {
+            let amount = 100;
+            let profitLoss = Math.floor(Math.random() * 5) - 2; // -2 to +2 USD
+            let message = "";
+            
+            if (type === 'buy' || type === 'sell') {
+                message = `${type.toUpperCase()}: ${profitLoss >= 0 ? '+' : ''}${profitLoss} USD`;
+            } else {
+                message = `${type.toUpperCase()}: ${type === 'deposit' ? '+' : '-'}${amount} USD`;
+            }
+            
+            $("#transaction-list").append(`<li>${message}</li>`);
+            transactionCount++;
+            
+            if (transactionCount === 1) riskLevel = 45;
+            if (transactionCount === 2) riskLevel = 60;
+            if (transactionCount === 3) riskLevel = 70;
+            if (transactionCount === 4) riskLevel = 80;
+            
+            updateRiskIndicator();
+            
+            if (transactionCount === 4) {
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 2000);
+            }
+        }
+        
+        function updateRiskIndicator() {
+            let riskCircle = document.getElementById("risk-circle");
+            riskCircle.innerText = riskLevel + "%";
+            
+            if (riskLevel < 40) riskCircle.className = "risk-green";
+            else if (riskLevel < 70) riskCircle.className = "risk-orange";
+            else riskCircle.className = "risk-red";
+        }
+    </script>
+    
+    <style>
+        .container { text-align: center; padding: 20px; }
+        .buttons button { margin: 5px; padding: 10px; cursor: pointer; }
+        .transactions { margin-top: 20px; }
+        .risk-indicator { margin-top: 20px; font-size: 20px; }
+        .risk-green { color: green; }
+        .risk-orange { color: orange; }
+        .risk-red { color: red; }
+    </style>
+</body>
+</html>
