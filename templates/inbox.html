@@ -1,67 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inbox</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-    <div class="sidebar">
-        <div class="sidebar-icons">
-            <div class="icon"><a href="/dashboard">☰</a></div>
-            <div class="icon"><a href="/inbox">✉</a></div>
-        </div>
+<div class="sidebar">
+    <div class="sidebar-icons">
+        <a href="/dashboard" class="icon">🏠</a>  <!-- Dashboard -->
+        <a href="/inbox" class="icon">✉</a>       <!-- Inbox -->
+    </div>
+</div>
+
+<div class="main-content">
+    <header>
+        <h1>Inbox - Fraud Notifications</h1>
+    </header>
+    
+    <div class="card">
+        <h2>Manual Interventions</h2>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Risk</th>
+                <th>Problem</th>
+            </tr>
+            {% for entry in manual_interventions %}
+            <tr>
+                <td>{{ entry.user_id }}</td>
+                <td>{{ entry.risk }}</td>
+                <td>{{ entry.problem }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 
-    <div class="main-content">
-        <header>
-            <h1>Inbox</h1>
-        </header>
-
-        <div class="card">
-            <h2>Manual Interventions</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Risk Level</th>
-                        <th>Problem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in manual_interventions %}
-                    <tr>
-                        <td>{{ item.user_id }}</td>
-                        <td>{{ item.risk }}</td>
-                        <td>{{ item.problem }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="card">
-            <h2>AI Scanned Users</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Risk Level</th>
-                        <th>Problem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in ai_scanned_users %}
-                    <tr>
-                        <td>{{ item.user_id }}</td>
-                        <td>{{ item.risk }}</td>
-                        <td>{{ item.problem }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <div class="card">
+        <h2>AI-Scanned Users</h2>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Risk</th>
+                <th>Problem</th>
+            </tr>
+            {% for entry in ai_scanned_users %}
+            <tr>
+                <td>{{ entry.user_id }}</td>
+                <td>{{ entry.risk }}</td>
+                <td>{{ entry.problem }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-</body>
-</html>
+</div>

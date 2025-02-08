@@ -13,12 +13,12 @@ def dashboard():
         'y1': [100, 120, 140, 145, 142, 138],
         'y2': [90, 95, 110, 115, 112, 108]
     }
-    
-    # Create the plotly figure
+
+    # Create the Plotly figure
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=time_data['x'], y=time_data['y1'], name='Series 1'))
     fig.add_trace(go.Scatter(x=time_data['x'], y=time_data['y2'], name='Series 2'))
-    
+
     # Update layout for dark theme
     fig.update_layout(
         paper_bgcolor='rgba(26, 32, 44, 0)',
@@ -27,15 +27,22 @@ def dashboard():
         margin=dict(l=20, r=20, t=20, b=20),
         showlegend=False
     )
-    
+
     # Sample transaction data
     transactions = [
         {'user_id': '69231731', 'date': '04/06/2025', 'stock': 'S&P500', 'pl': '+1 USD', 'withdraw': '', 'deposit': '+501 USD'},
         {'user_id': '69231731', 'date': '04/06/2025', 'stock': 'S&P500', 'pl': '-2 USD', 'withdraw': '-498 USD', 'deposit': ''},
     ]
-    
-    return render_template('dashboard.html', plot_json=json.dumps(fig.to_dict()), transactions=transactions, risk_score=80)
 
+    location_data = {'user_id': '69231731', 'ip_address': '192.158.1.38', 'region': 'America'}
+    payment_data = {'user_id': '69231731', 'institution': 'Bank'}
+
+    return render_template('dashboard.html', 
+                           plot_json=json.dumps(fig.to_dict()), 
+                           transactions=transactions,
+                           location_data=location_data, 
+                           payment_data=payment_data, 
+                           risk_score=80)
 
 @app.route('/inbox')
 def inbox():
@@ -46,11 +53,13 @@ def inbox():
 
     ai_scanned_users = [
         {'user_id': '69231731', 'risk': 70, 'problem': 'Repeated Odd-Hour Transactions'},
-        {'user_id': '69231731', 'risk': 65, 'problem': 'Similar Activity with # 69231731'},
+        {'user_id': '69231731', 'risk': 65, 'problem': 'Similar Activity with #69231731'},
     ]
 
-    return render_template('inbox.html', manual_interventions=manual_interventions, ai_scanned_users=ai_scanned_users)
-
+    return render_template('inbox.html', 
+                           manual_interventions=manual_interventions, 
+                           ai_scanned_users=ai_scanned_users, 
+                           inbox_notifications=4)
 
 if __name__ == '__main__':
     app.run(debug=True)
