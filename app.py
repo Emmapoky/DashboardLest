@@ -131,6 +131,3 @@ def submit_review(user_id):
         
         # Redirect back to inbox after submission
         return redirect(url_for('inbox'))
-
-if __name__ == '__main__':
-    app.run(debug=True)
